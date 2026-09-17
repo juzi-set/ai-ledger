@@ -5,6 +5,27 @@
 并通过内置**本地规则引擎**自动分类、做统计与自然语言问答——不联网、不调用任何云 API，
 数据只存在你自己的 NAS 上。
 
+## 界面预览
+
+> 以下截图均基于**纯虚构演示数据**生成，不含任何真实账目信息。
+> 图片放在仓库的 `screenshots/` 目录里，用相对路径引用，克隆/离线也能正常显示。
+
+**仪表盘** — 收支概览、支出分类占比、近 12 个月趋势、分类排行（点图例可下钻看逐笔）
+
+![仪表盘](screenshots/02-dashboard.png)
+
+**流水** — 时间段 / 方向 / 分类 / 关键字筛选，分类构成环形图 + 逐笔明细，每行可独立编辑、列宽可拖拽
+
+![流水](screenshots/03-transactions.png)
+
+**智能问答** — 用中文直接问，回答 + 占比环形图 + 命中明细，支持一级与二级分类
+
+![智能问答](screenshots/04-qa.png)
+
+**登录** — 账户名 + 密码（PBKDF2 加盐哈希），会话 30 天
+
+![登录](screenshots/01-login.png)
+
 ## 技术栈
 - 后端：Python · FastAPI · SQLite（单文件，零配置）
 - 解析：openpyxl（xlsx）/ csv（csv、txt、tsv）
@@ -46,6 +67,7 @@ docker compose up -d --build
 ├── docker-compose.yml
 ├── requirements.txt
 ├── wheels/              # 离线依赖包（构建时不再联网，必须随项目一起上传）
+├── screenshots/         # README 里引用的界面预览图（纯演示数据）
 ├── .env.example         # 密码模板（真实 .env 不进仓库）
 ├── .gitignore / .dockerignore
 └── README.md
