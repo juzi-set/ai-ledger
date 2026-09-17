@@ -1,0 +1,109 @@
+/* ===== Regal Admin 登录页 · 1:1 还原模板（零外部依赖，全部作用域限定在 .regal-login） =====
+   数值取自模板 style.css：btn-info #3794fc / 焦点 #80bdff / 复选框强调色 #ec37fc /
+   text-primary #ec37fc / 输入框 border-radius 2px / auth-form-btn 高度 50px / brand-logo 115px */
+
+.regal-login {
+  position: fixed; inset: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  background: #f2f4f8;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+.regal-login.hidden { display: none; }
+
+/* 卡片 */
+.regal-login .auth-form-light {
+  background: #ffffff;
+  width: 100%; max-width: 450px;
+  border-radius: 4px;
+  box-shadow: 0 4px 30px rgba(23, 43, 80, .10);
+  padding: 3rem;
+}
+.regal-login .brand-logo { margin-bottom: 2rem; }
+.regal-login .brand-logo img { width: 115px; display: block; }
+.regal-login h4 { margin: 0; font-size: 1.5rem; font-weight: 600; color: #212529; }
+.regal-login h6.font-weight-light { margin: .4rem 0 0; font-weight: 300; font-size: 1rem; color: #6c757d; }
+
+/* 表单 */
+.regal-login form.pt-3 { padding-top: 1rem; }
+.regal-login .form-group { margin-bottom: 1.5rem; }
+.regal-login .form-control {
+  display: block; width: 100%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.875rem 1.375rem;
+  font-size: 0.875rem; font-weight: 400; line-height: 1;
+  color: #495057; background-color: #fff;
+  border: 1px solid #ced4da; border-radius: 2px;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.regal-login .form-control-lg {
+  height: calc(1.5em + 1rem + 2px);
+  padding: 0.94rem 1.94rem;
+  font-size: 1.25rem; line-height: 1.5;
+}
+.regal-login .form-control:focus {
+  color: #495057; background-color: #fff;
+  border-color: #80bdff; outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+}
+.regal-login .form-control::placeholder { color: #999; opacity: 1; }
+
+/* 按钮 */
+.regal-login .btn {
+  display: inline-block; font-weight: 400; text-align: center;
+  white-space: nowrap; vertical-align: middle; user-select: none;
+  border: 1px solid transparent; padding: .5rem 1rem;
+  font-size: 1rem; line-height: 1.5; border-radius: .3rem; cursor: pointer;
+}
+.regal-login .btn-block { display: block; width: 100%; }
+.regal-login .btn-lg { padding: .5rem 1rem; font-size: 1.25rem; border-radius: .3rem; }
+.regal-login .btn-info { color: #fff; background-color: #3794fc; border-color: #3794fc; }
+.regal-login .btn-info:hover { color: #fff; background-color: #1180fb; border-color: #0579fb; }
+.regal-login .btn-info:focus { box-shadow: 0 0 0 0.2rem rgba(85, 164, 252, .5); }
+.regal-login .btn-facebook { background: #3b579d; color: #fff; }
+.regal-login .btn-facebook:hover { background: #2d4278; color: #fff; }
+.regal-login .auth-form-btn { height: 50px; line-height: 1.5; }
+.regal-login .font-weight-medium { font-weight: 500; }
+
+/* 间距工具类 */
+.regal-login .pt-3 { padding-top: 1rem; }
+.regal-login .mt-3 { margin-top: 1rem; }
+.regal-login .my-2 { margin-top: .5rem; margin-bottom: .5rem; }
+.regal-login .mb-2 { margin-bottom: .5rem; }
+.regal-login .mt-4 { margin-top: 1.5rem; }
+.regal-login .text-left { text-align: left; }
+.regal-login .text-right { text-align: right; }
+.regal-login .text-center { text-align: center; }
+.regal-login .d-flex { display: flex; }
+.regal-login .justify-content-between { justify-content: space-between; }
+.regal-login .align-items-center { align-items: center; }
+
+/* 复选框（自定义紫色方块 + 白勾，替代模板的 MDI 字体图标） */
+.regal-login .form-check { position: relative; }
+.regal-login .form-check-label { position: relative; padding-left: 28px; cursor: pointer; font-size: .875rem; color: #6c757d; margin: 0; }
+.regal-login .form-check-input { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; margin: 0; opacity: 0; cursor: pointer; z-index: 2; }
+.regal-login .input-helper { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; }
+.regal-login .input-helper:before {
+  content: ""; position: absolute; top: 0; left: 0;
+  width: 18px; height: 18px; border-radius: 2px;
+  border: 2px solid #ec37fc; transition: all .25s;
+}
+.regal-login .input-helper:after {
+  content: ""; position: absolute; left: 6px; top: 3px;
+  width: 5px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0); opacity: 0; transition: all .25s;
+}
+.regal-login .form-check-input:checked + .input-helper:before { background: #ec37fc; border-width: 0; }
+.regal-login .form-check-input:checked + .input-helper:after { transform: rotate(45deg) scale(1); opacity: 1; }
+
+/* 链接 */
+.regal-login .auth-link { color: #000; font-size: .875rem; text-decoration: none; }
+.regal-login .auth-link:hover { color: #000; text-decoration: underline; }
+.regal-login .text-primary { color: #ec37fc; text-decoration: none; }
+.regal-login .text-primary:hover { text-decoration: underline; }
+.regal-login .font-weight-light { font-weight: 300; }
+
+/* Facebook 图标（内联 SVG，避免引用外部字体） */
+.regal-login .fb-ico { display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; }
+.regal-login .fb-ico svg { display: block; }

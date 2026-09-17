@@ -1,0 +1,248 @@
+:root {
+  --bg: #f5f6f8;
+  --panel: #ffffff;
+  --ink: #1f2733;
+  --muted: #6b7686;
+  --line: #e6e9ef;
+  --brand: #3b6ef5;
+  --brand-soft: #eaf0ff;
+  --red: #e53935;
+  --green: #2e9b5b;
+  --shadow: 0 1px 3px rgba(20, 30, 50, .08), 0 6px 18px rgba(20, 30, 50, .05);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+               "Microsoft YaHei", sans-serif;
+  background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.5;
+}
+.topbar {
+  display: flex; align-items: center; gap: 18px;
+  padding: 12px 22px; background: var(--panel);
+  border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 20;
+}
+.logo { font-size: 18px; font-weight: 700; letter-spacing: .5px; flex: 0 0 auto; white-space: nowrap; }
+.logo small { color: var(--muted); font-weight: 400; font-size: 12px; margin-left: 6px; }
+.nav { display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap; flex: 0 1 auto; }
+.nav button {
+  border: none; background: transparent; color: var(--muted);
+  padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 14px;
+  white-space: nowrap;
+}
+.nav button.active { background: var(--brand-soft); color: var(--brand); font-weight: 600; }
+.nav button:hover { color: var(--ink); }
+
+.wrap { max-width: 1080px; margin: 22px auto; padding: 0 18px; }
+.tab { display: none; }
+.tab.active { display: block; }
+
+.card {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 14px; padding: 18px; box-shadow: var(--shadow); margin-bottom: 18px;
+}
+.card h3 { margin: 0 0 14px; font-size: 15px; }
+.row { display: flex; gap: 14px; flex-wrap: wrap; }
+.row > * { flex: 1; min-width: 160px; }
+
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.stat {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  padding: 16px; box-shadow: var(--shadow);
+}
+.stat .k { color: var(--muted); font-size: 12px; }
+.stat .v { font-size: 22px; font-weight: 700; margin-top: 6px; }
+.stat.income .v { color: var(--green); }
+.stat.expense .v { color: var(--red); }
+
+select, input, textarea, button.btn {
+  font: inherit; padding: 8px 10px; border: 1px solid var(--line);
+  border-radius: 8px; background: #fff; color: var(--ink); outline: none;
+}
+select:focus, input:focus, textarea:focus { border-color: var(--brand); }
+button.btn {
+  background: var(--brand); color: #fff; border: none; cursor: pointer; font-weight: 600;
+}
+button.btn:hover { filter: brightness(1.05); }
+button.btn.ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+button.btn.danger { background: #fff; color: var(--red); border: 1px solid #f3c2c2; }
+button.btn:disabled { opacity: .5; cursor: not-allowed; }
+button.btn.block { width: 100%; margin-top: 6px; }
+
+.userbox { margin-left: 12px; display: flex; gap: 6px; align-items: center; flex: 0 0 auto; }
+.userbox .btn { white-space: nowrap; }
+/* 顶栏显示当前登录账户名 */
+.who {
+  font-size: 13px; color: var(--muted); max-width: 160px; flex: 0 0 auto;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  padding-right: 4px;
+}
+
+/* 表单错误提示（登录页 / 账户弹窗 / 导入页共用） */
+.err {
+  color: var(--red); font-size: 12px; line-height: 1.4;
+  min-height: 17px; margin-top: 6px; word-break: break-all;
+}
+.err:empty { min-height: 0; margin-top: 0; }
+
+/* 登录页样式已迁移到 regal-login.css（Regal Admin 1:1 还原） */
+
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+.spacer { flex: 1; }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 600; font-size: 12px; }
+td.amt { text-align: right; font-variant-numeric: tabular-nums; }
+.amt.income { color: var(--green); }
+.amt.expense { color: var(--red); }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px;
+       background: var(--brand-soft); color: var(--brand); }
+.pill { padding: 2px 8px; border-radius: 999px; font-size: 12px; }
+.pill.income { background: #e7f6ee; color: var(--green); }
+.pill.expense { background: #fdeaea; color: var(--red); }
+
+.pager { display: flex; gap: 8px; align-items: center; justify-content: center; margin-top: 12px; }
+
+.dropzone {
+  border: 2px dashed var(--line); border-radius: 14px; padding: 30px; text-align: center;
+  color: var(--muted); cursor: pointer; transition: .15s;
+}
+.dropzone:hover, .dropzone.drag { border-color: var(--brand); background: var(--brand-soft); color: var(--brand); }
+
+.map-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.map-table th, .map-table td { border: 1px solid var(--line); padding: 6px 8px; font-size: 13px; }
+.map-table th { background: #fafbfc; }
+
+.muted { color: var(--muted); }
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: #1f2733; color: #fff; padding: 10px 18px; border-radius: 10px;
+  box-shadow: var(--shadow); opacity: 0; pointer-events: none; transition: .25s; z-index: 50;
+}
+.toast.show { opacity: 1; }
+
+/* 流水页图表两栏 + 智能问答内的图表/明细块 */
+.chart-half { flex: 1; min-width: 240px; }
+.chart-half h4, .qa-chart h4, .qa-detail h4 {
+  margin: 4px 0 8px; font-size: 13px; color: var(--muted); font-weight: 600;
+}
+.qa-chart { margin-top: 12px; }
+.qa-detail { margin-top: 12px; }
+/* 流水表首列（选择框）居中 */
+#tx-table td:first-child, #tx-table th:first-child { text-align: center; width: 36px; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 10px; }
+/* 流水页右侧「分类占比」图例放大，作为主展示 */
+.legend-lg { gap: 10px 18px; margin-top: 14px; }
+.legend-lg .leg-item { font-size: 13px; padding: 4px 6px; }
+
+/* 流水表格：定宽 + 允许换行，避免单元格内容堆叠 */
+#tx-table { table-layout: fixed; width: max-content; min-width: 100%; }
+#tx-table th {
+  position: relative;
+  vertical-align: top;
+  white-space: nowrap;          /* 表头不换行，保持单行 */
+  overflow: hidden;
+}
+#tx-table td {
+  vertical-align: top;
+  word-break: break-word;       /* 长文本换行，不再横向溢出/堆叠 */
+  overflow-wrap: anywhere;
+}
+#tx-table .tx-note { white-space: normal; }
+/* 列宽拖拽手柄（贴在表头右边缘） */
+.col-resizer {
+  position: absolute; top: 0; right: -3px; width: 7px; height: 100%;
+  cursor: col-resize; user-select: none; z-index: 2;
+}
+.col-resizer:hover { background: var(--brand); opacity: .35; }
+/* 行内编辑输入框 */
+.tx-edit-input {
+  width: 100%; box-sizing: border-box; padding: 4px 6px; font-size: 13px;
+}
+/* 隐藏列 */
+.col-hidden { display: none !important; }
+
+/* 流水工具栏「显示列」下拉 */
+.cols-details {
+  position: relative;
+  border: 1px solid var(--line); border-radius: 8px; padding: 4px 10px;
+  cursor: pointer; user-select: none; background: var(--surface);
+}
+.cols-details > summary { list-style: none; font-size: 13px; color: var(--muted); }
+.cols-details > summary::-webkit-details-marker { display: none; }
+.cols-details[open] { z-index: 20; }
+.cols-toggles {
+  position: absolute; top: 110%; left: 0; min-width: 160px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 8px 10px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.cols-toggles label { display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; }
+.cols-toggles input { cursor: pointer; }
+.tx-op { white-space: nowrap; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; }
+.legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.legend .leg-item b { font-weight: 600; color: var(--ink); }
+.legend .leg-item em { font-style: normal; color: var(--muted); }
+
+/* 仪表盘：工具栏 / 自定义区间 */
+.dash-toolbar { gap: 10px; }
+.dash-custom { display: inline-flex; align-items: center; gap: 8px; }
+.dash-custom input[type=date] { padding: 6px 8px; }
+
+/* 环形饼图：悬停放大 + 阴影高亮 */
+.donut { display: block; margin: 0 auto; overflow: visible; }
+.donut .slice path {
+  transition: transform .15s ease, filter .15s ease;
+  transform-box: view-box;          /* 以整个 SVG 视口为参照 */
+  transform-origin: 110px 110px;    /* 绕圆心缩放，扇区向外“弹出” */
+}
+.donut .slice:hover path { transform: scale(1.045); filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .22)); }
+
+/* 支出分类排行（横向条形） */
+.rank-row { display: grid; grid-template-columns: 92px 1fr 88px 46px; align-items: center; gap: 10px; padding: 6px 0; font-size: 13px; }
+.rank-name { color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rank-track { background: #f1f3f7; border-radius: 6px; height: 14px; overflow: hidden; }
+.rank-bar { display: block; height: 100%; border-radius: 6px; transition: width .45s ease; }
+.rank-val { text-align: right; font-variant-numeric: tabular-nums; }
+.rank-pct { text-align: right; color: var(--muted); font-size: 12px; }
+
+.qa-box { background: var(--brand-soft); border-radius: 12px; padding: 14px; color: var(--ink); margin-top: 12px; }
+.cat-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.cat-item:last-child { border-bottom: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { background: #f1f3f7; border-radius: 6px; padding: 2px 8px; font-size: 12px; color: var(--muted); }
+.hint { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+/* ---------------- 账户设置弹窗 ---------------- */
+.modal {
+  position: fixed; inset: 0; z-index: 60; padding: 20px;
+  display: none; align-items: center; justify-content: center;
+  background: rgba(20, 30, 50, .38);
+}
+.modal.show { display: flex; }
+.modal-card {
+  background: var(--panel); border-radius: 14px; padding: 22px;
+  width: 100%; max-width: 460px; box-shadow: 0 10px 40px rgba(20, 30, 50, .22);
+  max-height: 90vh; overflow: auto;
+}
+.modal-card h3 { margin: 0 0 6px; font-size: 16px; }
+.modal-sub { font-size: 12px; margin: 0 0 16px; }
+.modal-sep { border: none; border-top: 1px solid var(--line); margin: 16px 0; }
+.modal-actions { margin-top: 14px; }
+.modal .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.modal .field:last-child { margin-bottom: 0; }
+.modal .field label { font-size: 12px; color: var(--muted); }
+.modal .field input { width: 100%; }
+.modal .field-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.modal .field-row > .field { flex: 1; min-width: 140px; margin-bottom: 0; }
+/* 行内的输入框要能收缩，否则 width:100% 会把同行的按钮挤到下一行 */
+.modal .field-row > input { flex: 1 1 auto; width: auto; min-width: 0; }
+.modal .field-row > .btn { flex: 0 0 auto; }
+
+/* 登录卡片里的小字提示 */
+.regal-login .login-hint {
+  margin-top: 10px; font-size: .8125rem; color: #9aa3b0; text-align: center; line-height: 1.5;
+}

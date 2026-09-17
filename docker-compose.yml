@@ -1,0 +1,24 @@
+services:
+  ledger:
+    build:
+      context: .
+      # 飞牛 NAS 拉 docker.io 官方镜像会被代理 docker.fnnas.com 拦截报 401；改用 docker.1panel.live（实测可拉取）。
+      # 若你能直连 docker.io，删除下面 args 里 PY_BASE 这一行即可。
+      args:
+        PY_BASE: docker.1panel.live/library/python:3.11-slim
+    image: ai-ledger:1.5.3
+    container_name: ai-ledger
+    ports:
+      - "8010:8000"
+    volumes:
+      # 账目数据持久化到宿主机的 ./data 目录（SQLite 单文件，备份即拷目录）
+      - ./data:/data
+    environment:
+      - LEDGER_DB=/data/ledger.db
+      - PORT=8000
+      # 访问密码 / 账户名从 .env 读取（不要写死在这里！）
+      - LEDGER_PASSWORD=${LEDGER_PASSWORD}
+      - LEDGER_USERNAME=${LEDGER_USERNAME}
+    env_file:
+      - .env
+    restart: unless-stopped

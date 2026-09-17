@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="pTVfwsATYjcX0WrH7BM3LB">
+<head data-page-node-id="2gbhRDSFbkFAwSOHjwC0XU">
+  <meta charset="UTF-8" data-page-node-id="M0phqup3oHScKewZ3p2tTt" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" data-page-node-id="eksYXrvCOzyt5AMgmBCa32" />
+  <title>本地 AI 记账</title>
+  <link rel="stylesheet" href="/static/style.css" data-page-node-id="k7tgLSpkU5wA9oHGFjD7yb" />
+  <link rel="stylesheet" href="/static/regal-login.css" data-page-node-id="lgRgl" />
+</head>
+<body data-page-node-id="CHQgYo1IiLHhnl81TbkFMF">
+  <div class="topbar" data-page-node-id="i15ACtWJWCltmRplwbktQT">
+    <div class="logo" data-page-node-id="FGGiynoTOUZ0iq029kPLme">🐧 本地 AI 记账<small data-page-node-id="fEf9IeXnTNZ5sfgzQHEsvB">飞牛 NAS · 离线运行</small></div>
+    <nav class="nav" data-page-node-id="GX3SMZ69QkcPCvibuIvwoy">
+      <button data-tab="dash" class="active" data-page-node-id="UkqcYIRqAHpN0KdkDAu4Tg">仪表盘</button>
+      <button data-tab="tx" data-page-node-id="gIaAGFtS70YrUPFdHzC6Gh">流水</button>
+      <button data-tab="import" data-page-node-id="VH8MOFahWVQMmOHrnBNHdZ">导入</button>
+      <button data-tab="cat" data-page-node-id="6XW6J80Jt1JILHpGr2dCC9">分类</button>
+      <button data-tab="qa" data-page-node-id="cB99j8lzfdXy2U1XIHLM2Q">智能问答</button>
+    </nav>
+    <div class="userbox" id="userbox" style="display:none" data-page-node-id="Dekh0ucXSZ2uxNGg23Dy8b">
+      <span class="who" id="whoami" title="当前登录账户"></span>
+      <button class="btn ghost" id="btn-account" data-page-node-id="8vEa3YscQNAetfcEuT7fDZ">账户</button>
+      <button class="btn ghost" id="btn-logout" data-page-node-id="lFDLjBkKc0PeS628q156az">退出</button>
+    </div>
+  </div>
+
+  <div class="wrap" data-page-node-id="ILLJdPScQHFHrsfOEOQwwJ">
+    <!-- 仪表盘 -->
+    <section class="tab active" id="tab-dash" data-page-node-id="ujsMLTJHgrE4h43RTb1QnY">
+      <div class="toolbar dash-toolbar" data-page-node-id="XyJ5hYVJ0AiBMUe4LjwgBJ">
+        <select id="dash-range" data-page-node-id="vblNb4ydCiqd92vx2leqGQ">
+          <optgroup label="常用">
+            <option value="this_month">本月</option>
+            <option value="last_month">上月</option>
+            <option value="this_quarter">本季度</option>
+            <option value="last_quarter">上季度</option>
+            <option value="this_year">今年</option>
+            <option value="last_year">去年</option>
+            <option value="all">全部</option>
+          </optgroup>
+          <optgroup label="最近">
+            <option value="today">今天</option>
+            <option value="this_week">本周</option>
+            <option value="last_7d">近 7 天</option>
+            <option value="last_30d">近 30 天</option>
+            <option value="last_90d">近 90 天</option>
+            <option value="last_6m">近 6 个月</option>
+            <option value="last_12m">近 12 个月</option>
+          </optgroup>
+          <option value="custom">自定义区间…</option>
+        </select>
+        <span id="dash-custom" class="dash-custom" style="display:none">
+          <input type="date" id="dash-start" />
+          <span class="muted">至</span>
+          <input type="date" id="dash-end" />
+          <button class="btn" id="dash-apply">应用</button>
+        </span>
+        <span class="muted" id="dash-period" data-page-node-id="NZCuDhnoL0rq4p57NG4jB2"></span>
+      </div>
+      <p class="muted" style="margin:-4px 0 12px">提示：点击下方饼图扇区 / 排行条目 / 图例，可查看该分类在当前区间内的逐笔明细（日期 · 金额 · 所占比例）。</p>
+      <div class="stat-grid" id="dash-stats" data-page-node-id="RBotPkLUM8oaeD4dBJOwgj"></div>
+
+      <div class="row" style="margin-top:18px" data-page-node-id="I4WTI5r78m0YP7P85AOvHe">
+        <div class="card" data-page-node-id="X8MR0AGj0Y7BFezseBpEC1">
+          <h3 data-page-node-id="Xprm8qquGCgY8MHfJFT3Y6">支出分类占比</h3>
+          <div id="pie" data-page-node-id="yd5jxWA5TsKGN6VQFfdplV"></div>
+          <div class="legend" id="pie-legend" data-page-node-id="dvRbuMPVOBVEoLpsQV4IHv"></div>
+        </div>
+        <div class="card" data-page-node-id="Fj63gO33vIhKmyHhF3VEmq">
+          <h3 data-page-node-id="KKjEIrOjP8BzA9QkjDHXda">近 12 个月收支趋势</h3>
+          <div id="trend" data-page-node-id="wiA4HwvyXVL5fxEbLSLhxw"></div>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:18px">
+        <div class="card">
+          <h3>支出分类排行 Top 10</h3>
+          <div id="rank"></div>
+        </div>
+        <div class="card">
+          <h3>收入分类占比</h3>
+          <div id="pie-income"></div>
+          <div class="legend" id="pie-income-legend"></div>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:18px">
+        <div class="card">
+          <h3>月度分类支出（近 6 个月）</h3>
+          <div id="stacked"></div>
+          <div class="legend" id="stacked-legend"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 流水 -->
+    <section class="tab" id="tab-tx" data-page-node-id="FGFB6T3pCSqrrRvVsrBDr2">
+      <div class="toolbar" data-page-node-id="3cE7qlXgJIWVDW5r43jByw">
+        <select id="tx-range" data-page-node-id="hBgNxG0PLsPjFSeAtKDbzq">
+          <option value="" data-page-node-id="QyudWNDpIabHObscteAkD6">全部时间</option>
+          <option value="this_month" data-page-node-id="Jrnv6LdGTYL0ELb8u7ZlNe">本月</option>
+          <option value="last_month" data-page-node-id="MQcDVwWp0Rt5yF8BvrxFzd">上月</option>
+          <option value="this_year" data-page-node-id="OIUyaQjQMUldJvYDuKpU41">今年</option>
+          <option value="last_year" data-page-node-id="Ay3N7zMA5uSjknrwpr52Gc">去年</option>
+        </select>
+        <select id="tx-dir" data-page-node-id="Z1w3xQaDMkqMI9PgBRWDMl">
+          <option value="" data-page-node-id="QCOyu6oUSzFKQzBOO6PRMD">全部方向</option>
+          <option value="income" data-page-node-id="U3UaJpWyRnGDHBl2JkeA9R">收入</option>
+          <option value="expense" data-page-node-id="7fCs8u26uzTj0gAdXTLtWD">支出</option>
+        </select>
+        <select id="tx-cat" data-page-node-id="eT9rUSh325Y3b3YjbNTHpI"><option value="" data-page-node-id="Hi7h00pp42oA7zG0B2xfSU">全部分类</option></select>
+        <input id="tx-q" placeholder="搜索备注/商户/分类" style="min-width:180px" data-page-node-id="v0PAs4B39E1FAEehiKP13b" />
+        <button class="btn" id="tx-search" data-page-node-id="CFGb598grkLq9l3sCCE0iB">查询</button>
+        <details class="cols-details" id="tx-cols">
+          <summary>显示列</summary>
+          <div class="cols-toggles">
+            <label><input type="checkbox" data-col-toggle="date" checked />日期</label>
+            <label><input type="checkbox" data-col-toggle="category" checked />分类</label>
+            <label><input type="checkbox" data-col-toggle="account" checked />账户</label>
+            <label><input type="checkbox" data-col-toggle="counterparty" checked />交易对方</label>
+            <label><input type="checkbox" data-col-toggle="note" checked />备注</label>
+            <label><input type="checkbox" data-col-toggle="amount" checked />金额</label>
+            <label><input type="checkbox" data-col-toggle="direction" checked />方向</label>
+          </div>
+        </details>
+        <span class="spacer"></span>
+        <span class="muted" id="tx-sel"></span>
+        <button class="btn danger" id="tx-batch" disabled data-page-node-id="txBatchBtn">批量删除</button>
+      </div>
+      <div class="card" id="tx-chart-card" data-page-node-id="txChartCard">
+        <h3>当前筛选结果图表</h3>
+        <div class="row">
+          <div class="chart-half" style="flex:0 0 auto">
+            <h4>分类构成</h4>
+            <div id="tx-donut"></div>
+          </div>
+          <div class="chart-half">
+            <h4>分类占比（点击图例看该分类明细）</h4>
+            <div class="legend legend-lg" id="tx-donut-legend"></div>
+          </div>
+        </div>
+        <div class="muted" id="tx-chart-sum" style="margin-top:8px"></div>
+      </div>
+      <div class="card" style="padding:0;overflow:auto" data-page-node-id="11JAJuIGUXtfhfdNAe28oO">
+        <table id="tx-table" data-page-node-id="2gjEtrBck9palkWBr2qD4k">
+          <thead data-page-node-id="340s6qhdneFyDYymFKPvNk"><tr data-page-node-id="K81dNuVjxohCUJzjgdX8te">
+            <th style="width:36px"><input type="checkbox" id="tx-selall" title="全选本页" data-page-node-id="txSelAll" /></th>
+            <th data-col="date">日期</th><th data-col="category">分类</th><th data-col="account">账户</th><th data-col="counterparty">交易对方/商户</th>
+            <th data-col="note">备注</th><th style="text-align:right" data-col="amount">金额</th><th data-col="direction">方向</th><th data-col="op">操作</th>
+          </tr></thead>
+          <tbody data-page-node-id="OtunzfMbBgzJNel5txITAz"></tbody>
+        </table>
+      </div>
+      <div class="pager" data-page-node-id="lGtgkEsQUXS5jCMAK74y9E">
+        <button class="btn ghost" id="tx-prev" data-page-node-id="LxOYcfznybTOX1HjmvFsBO">上一页</button>
+        <span id="tx-page" class="muted" data-page-node-id="yy3Z2nGyyb0G03h8Y1fPH5"></span>
+        <button class="btn ghost" id="tx-next" data-page-node-id="gb8cljdZmWcXprnZlUKAjR">下一页</button>
+      </div>
+    </section>
+
+    <!-- 导入 -->
+    <section class="tab" id="tab-import" data-page-node-id="wX4Ff3s0DBzXRAr0D60Gyu">
+      <div class="card" data-page-node-id="0QwSm4uZk90wnn7sr1R8id">
+        <h3 data-page-node-id="00ewNqKxBt6D6jxSyJXQzJ">1. 上传记账软件导出的 Excel / CSV</h3>
+        <div class="dropzone" id="drop" data-page-node-id="9aEWYC3OOHIzqBCiA3Obog">点击或拖拽文件到此处（支持 .xlsx / .xlsm / .csv / .txt）</div>
+        <input type="file" id="file" accept=".xlsx,.xlsm,.csv,.txt" hidden data-page-node-id="6ziwQpTOVKWJYK3Dzsyv4X" />
+        <div class="hint" data-page-node-id="GJIJpNHpKNDMyESCSM8Rox">支持的来源：通用列映射（自动识别任意格式）· 微信支付账单 · 支付宝账单 · 咔皮记账 · 银行流水。若列名对不上，下一步点预设按钮或手动指定即可。</div>
+      </div>
+      <div class="card" id="import-step2" style="display:none" data-page-node-id="RBmvd6Zu4mzyoi5VsKKt8q">
+        <h3 data-page-node-id="KlQ1IHTINvT8uFZBITXUdM">2. 字段映射 <span class="muted" id="import-info" data-page-node-id="pBhCh1LDbsRAxkdgOEU66E"></span></h3>
+        <div class="err" id="import-warn" style="display:none" data-page-node-id="wnRm1x9pEF0WarnMsg01"></div>
+        <div class="toolbar" data-page-node-id="PIE5kVumhaFBIZCnS0vbFQ">
+          <button class="btn ghost" data-preset="" data-page-node-id="ujTpakYD8Wh0HuRALTWNmt">自动识别</button>
+          <button class="btn ghost" data-preset="微信支付账单" data-page-node-id="QHJ3GGzvm3LflKCq9MPJtT">微信账单</button>
+          <button class="btn ghost" data-preset="支付宝账单" data-page-node-id="dxHIElPMtgWT8h5UmZsBCw">支付宝账单</button>
+          <button class="btn ghost" data-preset="咔皮记账" data-page-node-id="rCyxbaQKL1ThfkLpg9MfTH">咔皮记账</button>
+          <button class="btn ghost" data-preset="银行流水" data-page-node-id="ysH5CqorOHZXfgy45uFiy6">银行流水</button>
+          <span class="spacer" data-page-node-id="e1pc7hhiKqxhA9kbXbySXx"></span>
+          <input id="import-source" placeholder="数据来源名称（可选）" style="min-width:160px" data-page-node-id="d7tleu5oP1OSPywgKfQpmM" />
+        </div>
+        <div id="map-ui" data-page-node-id="rXFqIaBZDNjQcA3lg0DROA"></div>
+        <h3 style="margin-top:16px" data-page-node-id="RjJWVhyqFOeAHnccPFgDh7">数据预览（前 20 行）</h3>
+        <div style="overflow:auto;max-height:320px" data-page-node-id="AGCZVBEYclq7mhw9zVCXjt">
+          <table class="map-table" id="preview-table" data-page-node-id="lkLyhEYmPZMoxQ5DKw0ld8"></table>
+        </div>
+        <div class="toolbar" style="margin-top:16px" data-page-node-id="4P8IExult5dDEJCifjbGmv">
+          <button class="btn" id="import-apply" data-page-node-id="AHSGOs0LqABZkDsuDCZckL">确认导入</button>
+          <span class="muted" id="import-result" data-page-node-id="VV9t8F5RFvTdzhDJSt48vZ"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 分类 -->
+    <section class="tab" id="tab-cat" data-page-node-id="xulikYQ6nBl2Vl99CGF8p1">
+      <div class="card" data-page-node-id="AgHvwCGqBKAenVg1POzvMM">
+        <h3 data-page-node-id="8bVHUyBudck02QjsC9LL2E">分类与关键词规则</h3>
+        <div id="cat-list" data-page-node-id="qhlIhQCUFBhjD8Lp0eRS3J"></div>
+      </div>
+      <div class="card" data-page-node-id="86hXMS3rfrn0ehWCV1lfHp">
+        <h3 data-page-node-id="vMldwNu3z9rBUQX4vc4yS0">新增 / 编辑分类</h3>
+        <div class="row" data-page-node-id="8KOPBe4Cs0b43iGeYksIoB">
+          <input id="cat-name" placeholder="分类名称（如：宠物）" data-page-node-id="KqUW9iSsXzYOnCAFV8niJ6" />
+          <select id="cat-type" data-page-node-id="pM5hKnJYvFtYjTtrlHicOw">
+            <option value="expense" data-page-node-id="ytSLyxMqD64tmcUD3fqAWh">支出</option>
+            <option value="income" data-page-node-id="23EvjmRa4LKuz7LtbcO5eq">收入</option>
+            <option value="both" data-page-node-id="kj7A8CLIvrTaYDDb5EoKdF">收支皆可</option>
+          </select>
+          <input id="cat-icon" placeholder="图标 emoji" style="max-width:90px" value="🏷️" data-page-node-id="X547L1RJSBZpr6GrkUZRIk" />
+          <input id="cat-color" placeholder="颜色 #hex" style="max-width:110px" value="#3b6ef5" data-page-node-id="raBwLeFSiExytb32pyyBik" />
+        </div>
+        <div class="row" style="margin-top:10px" data-page-node-id="Qsh0tGDqhC1DpLXf6ALXiY">
+          <input id="cat-keywords" placeholder="关键词（逗号分隔，如：猫,狗,宠物医院）" style="flex:3" data-page-node-id="ixxQXptUWOYj6tXqBZJjh8" />
+          <button class="btn" id="cat-add" data-page-node-id="wOzIy0WE8FhGRmSEodtfuL">添加分类</button>
+        </div>
+        <div class="hint" data-page-node-id="e91rXwHSbd9Cavx07VTNKI">导入或智能查询时，系统会按这些关键词自动把交易归入对应分类。</div>
+      </div>
+    </section>
+
+    <!-- 智能问答 -->
+    <section class="tab" id="tab-qa" data-page-node-id="ndWQsdAYuv11mdLsQHTFX3">
+      <div class="card" data-page-node-id="1jWTuYPBLQZZpZuh6PFPaW">
+        <h3 data-page-node-id="zCyPBIY5UQClfrpvM46neu">用自然语言问账本（本地规则，无需联网）</h3>
+        <div class="toolbar" data-page-node-id="bwDfwGf2ZloV2qATKGThE6">
+          <input id="qa-text" placeholder="例如：本月餐饮花了多少？上个月收入多少？今年结余？" style="flex:3" data-page-node-id="OMlfmZLYnj3DAyoe2FatbA" />
+          <button class="btn" id="qa-ask" data-page-node-id="lenJPQBumvqgWIFFr19o3n">问问看</button>
+        </div>
+        <div class="chips" style="margin-top:6px" data-page-node-id="LsaBO4FfXVZG3Opal2zhaq">
+          <span class="chip" data-q="本月餐饮支出多少" data-page-node-id="7XrpuhgNc61SH4F4vCc9e3">本月餐饮支出</span>
+          <span class="chip" data-q="上个月收入多少" data-page-node-id="KDKKrrrIXqdUBGmy4hBZL6">上月收入</span>
+          <span class="chip" data-q="今年结余多少" data-page-node-id="ElEsGoRmvf9tCSQ7IC1Hvf">今年结余</span>
+          <span class="chip" data-q="最近3个月交通花了多少" data-page-node-id="3plBxIcBhzkNmNIucx5jax">近3月交通</span>
+        </div>
+        <div id="qa-result" class="qa-box" style="display:none" data-page-node-id="hrNApLEaWAeRugdhB9MmCZ"></div>
+      </div>
+    </section>
+
+    <div class="hint" id="build-info" style="text-align:center;margin:14px 0 26px" data-page-node-id="bldInf0TbL1RowXyZ9q2Ab"></div>
+  </div>
+
+  <div class="toast" id="toast" data-page-node-id="R7WUQZpGS9FcYJYO9iVNDj"></div>
+
+  <!-- 登录页-->
+  <div class="regal-login" id="login-overlay" data-page-node-id="e1JjXDRpmK21AYs0p1g31d">
+    <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+      <div class="brand-logo">
+        <img src="/static/assets/logo-dark.svg" alt="logo" />
+      </div>
+      <h4>Hello! let's get started</h4>
+      <h6 class="font-weight-light">Sign in to continue.</h6>
+      <form class="pt-3" id="login-form">
+        <div class="form-group">
+          <input type="text" id="login-user" class="form-control form-control-lg" placeholder="Username"
+                 autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" required />
+        </div>
+        <div class="form-group">
+          <input type="password" id="login-pw" class="form-control form-control-lg" placeholder="Password"
+                 autocomplete="current-password" required />
+        </div>
+        <div class="err" id="login-err"></div>
+        <div class="mt-3">
+          <button type="submit" class="btn btn-block btn-info btn-lg font-weight-medium auth-form-btn" id="login-btn">SIGN IN</button>
+        </div>
+        
+        <div class="login-hint" id="login-hint">账户名默认 admin，登录后点右上角「账户」即可改名</div>
+        <div class="text-center mt-4 font-weight-light">
+          🚂Start the journey of bookkeeping
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 账户设置弹窗：改账户名 / 改密码（两件事共用「当前密码」这一道验证） -->
+  <div class="modal" id="acct-modal">
+    <div class="modal-card">
+      <h3>账户设置</h3>
+      <p class="muted modal-sub">账户名和密码都是登录凭据，改完请记牢。两项操作都需要先填写「当前密码」。</p>
+
+      <div class="field">
+        <label for="acct-user">账户名</label>
+        <div class="field-row">
+          <input type="text" id="acct-user" placeholder="2-32 位：中英文 / 数字 / 下划线 / 点 / 短横线 / @"
+                 autocapitalize="off" autocorrect="off" spellcheck="false" />
+          <button class="btn" id="acct-save-user">保存账户名</button>
+        </div>
+      </div>
+
+      <hr class="modal-sep" />
+
+      <div class="field">
+        <label for="acct-cur">当前密码</label>
+        <input type="password" id="acct-cur" placeholder="修改账户名或密码都需要先验证" autocomplete="current-password" />
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="acct-new">新密码</label>
+          <input type="password" id="acct-new" placeholder="至少 4 位" autocomplete="new-password" />
+        </div>
+        <div class="field">
+          <label for="acct-new2">确认新密码</label>
+          <input type="password" id="acct-new2" placeholder="再输入一次" autocomplete="new-password" />
+        </div>
+      </div>
+
+      <div class="err" id="acct-err"></div>
+
+      <div class="field-row modal-actions">
+        <button class="btn" id="acct-save-pw">修改密码</button>
+        <button class="btn ghost" id="acct-close">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 仪表盘：某分类的逐笔明细下钻 -->
+  <div class="modal" id="cat-modal">
+    <div class="modal-card" style="max-width:680px">
+      <h3 id="cat-modal-title">分类明细</h3>
+      <p class="muted modal-sub" id="cat-modal-sub"></p>
+      <div style="max-height:60vh;overflow:auto">
+        <table class="map-table" id="cat-detail-table">
+          <thead><tr>
+            <th>日期</th><th>分类</th><th style="text-align:right">金额</th>
+            <th style="text-align:right">占该分类</th><th style="text-align:right">占总额</th><th>备注 / 商户</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="field-row modal-actions">
+        <button class="btn ghost" id="cat-modal-close">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 品牌 Logo · 可直接在文本编辑器里修改：改 <text> 中的文字即可改名；改 <rect> 的 fill 可换主色 -->
+<svg width="97" height="24" viewBox="0 0 97 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- 左侧色块标识 -->
+  <rect x="0" y="3" width="18" height="18" rx="3" fill="#3794fc"/>
+  <!-- 主文字：把 Jz 替换为任意内容即可，例如 <text>...</text>记账</text>... -->
+  <text x="24" y="19" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#212529">Jz</text>
+</svg>
